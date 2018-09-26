@@ -13,7 +13,11 @@ const app = express();
  * res.send sends information to the client
  */
 app.get('/', (req, res) => {
-  res.send({ bye: 'goodbye!' });
+  res.send({ bye: 'goodbye!', nejudneFamily: {
+    papa: 'kim',
+    mama: 'donna',
+    baby: 'cloud'
+  } });
 });
 
 /**
@@ -23,3 +27,13 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
+
+/**
+ * HEROKU DEPLOYMENT
+ * git init
+ * git add .
+ * git commit -m "first deploy"
+ * heroku login
+ * heroku create
+ * git push heroku master
+ */
