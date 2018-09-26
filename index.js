@@ -13,7 +13,7 @@ const app = express();
  * res.send sends information to the client
  */
 app.get('/', (req, res) => {
-  res.send({ hi: 'there' });
+  res.send({ bye: 'goodbye!' });
 });
 
 /**
