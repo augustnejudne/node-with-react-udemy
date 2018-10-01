@@ -1,4 +1,6 @@
 const express = require('express');
+require('./services/passport');
+
 /**
  * so app constant initializes express instance.
  * pwede gumawa ng multiple express instances
@@ -7,24 +9,21 @@ const express = require('express');
 const app = express();
 
 /**
- * get method
- * root route
- * get needs a callback function that has two parameters ( req, res )
- * res.send sends information to the client
+ * woah! What's happening here?
+ * It's basically saying this:
+ * require('./routes/authRoutes') returns a function
+ * that returned function takes an argument.
+ * so what we're doing is we're immediately calling
+ * the function returned from ./routes/authRoutes and
+ * supplying 'app' as argument
  */
-app.get('/', (req, res) => {
-  res.send({ bye: 'goodbye!', nejudneFamily: {
-    papa: 'kim',
-    mama: 'donna',
-    baby: 'cloud'
-  } });
-});
+require('./routes/authRoutes')(app);
+
 
 /**
  * app.listen tells Node to listen to heroku's PORT environment variable
  * or port 5000 for HTTP requests
  */
-
 const PORT = process.env.PORT || 5000;
 app.listen(PORT);
 
