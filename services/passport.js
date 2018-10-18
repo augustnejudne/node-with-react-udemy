@@ -81,7 +81,12 @@ passport.use(
     {
       clientID: keys.googleClientID,
       clientSecret: keys.googleClientSecret,
-      callbackURL: '/auth/google/callback'
+      // the fact that this path is relative causes google to
+      //    drop the https from our callback url
+      // in development, '/auth/google/callback' works
+      // but this doesn't work in production
+      callbackURL: '/auth/google/callback',
+      proxy: true
     },
     (accessToken, refreshToken, profile, done) => {
       User.findOne({ googleID: profile.id })
