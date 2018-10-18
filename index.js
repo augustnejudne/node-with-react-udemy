@@ -92,7 +92,7 @@ require('./routes/authRoutes')(app);
  * This is my place holder index route
  */
 app.get('/', (req, res) => {
-  res.send('Hello, world!');
+  res.send('<h1>Hello, world!</h1><h2>Why is this not showing?!!!!</h2>');
 });
 
 /**
