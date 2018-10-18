@@ -1,12 +1,59 @@
-/**
- * import passport and passport-google-oauth20
- */
+const mongoose = require('mongoose');
+/** import passport and passport-google-oauth20 */
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+
+/**
+ * import the configuration keys for google
+ */
 const keys = require('../config/keys');
 
 /**
- * passport.use, pwede nating isipin to as parange generic register
+ * import the User model
+ * mongoose.model can take one or two arguments
+ * when you provide one argument, that means you're trying to get something out of mongoose
+ * when you provide two arguments, that means you're trying to load something into mongoose
+ */
+const User = mongoose.model('user');
+
+/**
+ * we generate some identifying token using serializeUser
+ * this serializeUser function which we define is going to be
+ *   called with our user model
+ * we actually don't define serializeUser
+ * what we do is we define a function and pass it to passport.serializeUser
+ * the first argument 'user' is the User instance
+ */
+passport.serializeUser((user, done) => {
+  /**
+   * 'done' is a callback that we have to call after passport has done its work
+   * the first argument to done is an error object
+   * the second argument is the identifying piece of information
+   *    that is going to identify the user in follow up requests
+   *    it's called user.id
+   * user.id is NOT the profile.id
+   * user.id is a shortcut to the mongoDB _id Object
+   * to uniquely identify the user, we're using the mongoDB record _id
+   * we're using the mongoDB record _id instead of the profile.id because
+   *    profile.id is unique to the Google OAuth process
+   * after the user has signed in, we only care about our mongoDB record _id
+   */
+  done(null, user.id);
+});
+
+/**
+ * the first argument is the exact token that we stuffed into the cookie
+ *   and for us, this is the user.id
+ * the second argument is the done function which we have to call after we
+ *   have successfully returned the id back to the user
+ */
+passport.deserializeUser((id, done) => {
+  // we find a user with the id we provided and pass the user to done
+  User.findById(id).then(user => done(null, user));
+});
+
+/**
+ * passport.use, pwede nating isipin to as parang generic register
  * we're telling passport kung paano mag-authenticate ng mga users
  * using a very specific service. in our case: Google
  *
@@ -37,18 +84,13 @@ passport.use(
       callbackURL: '/auth/google/callback'
     },
     (accessToken, refreshToken, profile, done) => {
-      console.log('================================');
-      console.log('ACCES TOKEN:');
-      console.log(accessToken);
-      console.log('================================');
-      console.log('================================');
-      console.log('REFRESH TOKEN:');
-      console.log(refreshToken);
-      console.log('================================');
-      console.log('================================');
-      console.log('PROFILE:');
-      console.log(profile);
-      console.log('================================');
+      User.findOne({ googleID: profile.id })
+        .then(user => {
+          return user ? user : new User({ googleID: profile.id }).save();
+        })
+        .then(user => {
+          done(null, user);
+        });
     }
   )
 );
