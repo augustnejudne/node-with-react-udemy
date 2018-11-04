@@ -13,7 +13,8 @@ const { Schema } = mongoose;
  * @type {Schema}
  */
 const userSchema = new Schema({
-  googleID: String
+  googleID: String,
+  credits: { type: Number, default: 0 }
 });
 
 /**

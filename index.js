@@ -12,6 +12,9 @@ const mongoose = require('mongoose');
 const cookieSession = require('cookie-session');
 const passport = require('passport');
 
+// body parser for parsing json data
+const bodyParser = require('body-parser');
+
 /**
  * these are the config keys
  * we're using the mongoose keys
@@ -57,6 +60,9 @@ mongoose.connect(
  */
 const app = express();
 
+// use the bodyParser middleware
+app.use(bodyParser.json());
+
 // over here, we're telling our app to use the cookies
 // this looks like a middleware
 // cookie-session extracts cookie data
@@ -88,9 +94,23 @@ app.use(passport.session());
  */
 require('./routes/authRoutes')(app);
 
-/**
- * This is my place holder index route
- */
+// routes for the STRIPE billing
+require('./routes/billingRoutes')(app);
+
+if (process.env.NODE_ENV === 'production') {
+  // Make sure that express serves up production assets
+  // like our main.js file
+  app.use(express.static('client/build'));
+
+  // Express will serve up the index.html file
+  // if it doesn't recognize the route
+  const path = require('path');
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  });
+}
+
+// This is my place holder index route
 app.get('/', (req, res) => {
   res.send('<h1>Hello, world!</h1><h2>Why is this not showing?!!!!</h2>');
 });

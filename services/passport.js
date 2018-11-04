@@ -89,13 +89,18 @@ passport.use(
       proxy: true
     },
     (accessToken, refreshToken, profile, done) => {
-      User.findOne({ googleID: profile.id })
-        .then(user => {
-          return user ? user : new User({ googleID: profile.id }).save();
-        })
-        .then(user => {
-          done(null, user);
-        });
+      // find a user with googleID of profile.id
+      // profile.id is comes from the client's google login
+      User.findOne({ googleID: profile.id }).then(user => {
+        // if user exists, return the user with zero errors
+        // else create a new user with googleID of profile.id
+        // and then, return the newly created user with zero errors
+        return user
+          ? done(null, user)
+          : new User({ googleID: profile.id })
+              .save()
+              .then(user => done(null, user));
+      });
     }
   )
 );

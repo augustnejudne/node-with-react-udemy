@@ -23,14 +23,22 @@ module.exports = app => {
    * over here, we're handling the route for '/auth/google/callback'
    * because this is where google sends the user after authentication
    */
-  app.get('/auth/google/callback', passport.authenticate('google'));
+  app.get(
+    '/auth/google/callback',
+    passport.authenticate('google'),
+    // after passport authenticats, redirect user to /surveys
+    (req, res) => {
+      res.redirect('/surveys');
+    }
+  );
 
   // the is the logout route
   app.get('/api/logout', (req, res) => {
     // to logout
     req.logout();
     // try to send req.user but req.user no longer exists
-    res.send(req.user);
+    // res.send(req.user);
+    res.redirect('/');
   });
 
   // this one is just a test route to check which user is logged in
@@ -38,21 +46,4 @@ module.exports = app => {
     // we send the user object
     res.send(req.user);
   });
-
-  /**
-   * get method
-   * root route
-   * get needs a callback function that has two parameters ( req, res )
-   * res.send sends information to the client
-   */
-  // app.get('/', (req, res) => {
-  //   res.send({
-  //     bye: 'goodbye!',
-  //     nejudneFamily: {
-  //       papa: 'kim',
-  //       mama: 'donna',
-  //       baby: 'cloud'
-  //     }
-  //   });
-  // });
 };
