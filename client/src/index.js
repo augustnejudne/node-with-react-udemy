@@ -1,14 +1,16 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-// import { composeWithDevTools } from 'redux-devtools-extension';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import { createStore, applyMiddleware } from 'redux';
 import reduxThunk from 'redux-thunk';
 
 import App from './components/App.js';
 import rootReducer from './reducers';
 
-const store = createStore(rootReducer, applyMiddleware(reduxThunk));
+const store = process.env.NODE_ENV
+  ? createStore(rootReducer, composeWithDevTools(applyMiddleware(reduxThunk)))
+  : createStore(rootReducer, applyMiddleware(reduxThunk));
 
 ReactDOM.render(
   <Provider store={store}>
