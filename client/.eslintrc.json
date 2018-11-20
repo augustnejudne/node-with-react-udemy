@@ -15,8 +15,9 @@
     },
     "plugins": ["react"],
     "rules": {
+        "react/prop-types": 0,
         "no-console": 0,
-        "indent": ["error", 2, { "MemberExpression": "off" }],
+        "indent": ["error", 2, { "MemberExpression": "off", "SwitchCase": 1 }],
         "linebreak-style": ["error", "unix"],
         "quotes": ["error", "single"],
         "semi": ["error", "always"]

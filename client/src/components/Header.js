@@ -1,6 +1,7 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
+import * as actions from '../actions';
 
 import Payments from './Payments';
 
@@ -18,7 +19,7 @@ class Header extends Component {
 
       default:
         return (
-          <Fragment>
+          <div>
             <li>
               <Payments />
             </li>
@@ -28,7 +29,7 @@ class Header extends Component {
             <li>
               <a href="/api/logout">Logout</a>
             </li>
-          </Fragment>
+          </div>
         );
     }
   }
@@ -62,5 +63,5 @@ function mapStateToProps({ auth }) {
 
 export default connect(
   mapStateToProps,
-  null
+  actions
 )(Header);

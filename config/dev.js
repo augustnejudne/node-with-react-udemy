@@ -7,5 +7,8 @@ module.exports = {
     'mongodb://august.nejudne:pringles1432@ds119663.mlab.com:19663/emaily-dev',
   cookieKey: 'thequickbrownfoxjumpsoverthelazydog',
   stripePublishableKey: 'pk_test_8fUVD427t7A3N0bwgaRtk8jp',
-  stripeSecretKey: 'sk_test_F4eV7ZNSRj58RESyykblOOJj'
+  stripeSecretKey: 'sk_test_F4eV7ZNSRj58RESyykblOOJj',
+  sendGridKey:
+    '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',
+  redirectDomain: 'http://localhost:3000'
 };

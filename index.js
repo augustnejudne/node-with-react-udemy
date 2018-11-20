@@ -30,6 +30,12 @@ const keys = require('./config/keys');
 require('./models/User');
 
 /**
+ * kim nejudne, november 4, 2018
+ * we're using the survey model
+ */
+require('./models/Survey');
+
+/**
  * when I require something, it just loads it?
  * i don't have to call it myself?
  * Yes. Aparrently, when you require something,
@@ -96,6 +102,9 @@ require('./routes/authRoutes')(app);
 
 // routes for the STRIPE billing
 require('./routes/billingRoutes')(app);
+
+// routes for the surveys
+require('./routes/surveyRoutes')(app);
 
 if (process.env.NODE_ENV === 'production') {
   // Make sure that express serves up production assets
