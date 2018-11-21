@@ -2,10 +2,6 @@ import React, { Component } from 'react';
 import M from 'materialize-css';
 
 class SurveyField extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   componentDidMount() {
     M.updateTextFields();
   }
