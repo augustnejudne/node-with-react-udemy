@@ -13,13 +13,13 @@ module.exports = app => {
     await stripe.charges.create({
       amount: 500,
       currency: 'usd',
-      description: '$5 for 5 credits',
+      description: '$5 for 500 credits',
       source: req.body.id
     });
 
     // thanks to passport, we can access the current user as req.user
     // this is setup automatically by passport
-    req.user.credits += 5;
+    req.user.credits += 500;
     res.send(await req.user.save());
   });
 };

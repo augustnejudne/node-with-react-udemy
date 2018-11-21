@@ -11,8 +11,9 @@ const Survey = mongoose.model('survey');
 
 module.exports = app => {
   app.get('/api/surveys', requireLogin, async (req, res) => {
-    const surveys = await Survey.find({ _user: req.user.id })
-      .select({ recipients: false });
+    const surveys = await Survey.find({ _user: req.user.id }).select({
+      recipients: false
+    });
 
     res.send(surveys);
   });
@@ -22,7 +23,6 @@ module.exports = app => {
   });
 
   app.post('/api/surveys/webhooks', (req, res) => {
-    console.log('============================================');
     const p = new Path('/api/surveys/:surveyId/:choice');
 
     const events = _.chain(req.body)
@@ -51,7 +51,6 @@ module.exports = app => {
       })
       .value();
     res.send(events);
-    console.log('============================================');
   });
 
   app.post('/api/surveys', requireLogin, requireCredits, async (req, res) => {
@@ -83,5 +82,11 @@ module.exports = app => {
     } catch (err) {
       res.status(422).send(err);
     }
+  });
+
+  app.delete('/api/surveys/:id', requireLogin, async (req, res) => {
+    const id = req.params.id;
+    const survey = await Survey.findOneAndDelete({_id: id});
+    res.send(survey);
   });
 };

@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
-import { fetchSurveys } from '../../actions';
+import { fetchSurveys, deleteSurvey } from '../../actions';
+import SurveyCard from './SurveyCard';
 
 class SurveyList extends Component {
   componentDidMount() {
@@ -8,22 +9,9 @@ class SurveyList extends Component {
   }
 
   renderSurveys() {
-    return this.props.surveys.reverse().map(({ _id, title, body, yes, no }) => {
-      return (
-        <div key={_id} className="card blue-grey darken-1">
-          <div className="card-content white-text">
-            <span className="card-title">{title}</span>
-            <p>
-              {body}
-            </p>
-          </div>
-          <div className="card-action">
-            <span className="badge white black-text">NO: {no}</span>
-            <span className="badge white black-text">YES: {yes}</span>
-          </div>
-        </div>
-      );
-    });
+    return this.props.surveys.map(({ _id, title, subject, body, yes, no }) => {
+      return <SurveyCard key={_id} _id={_id} title={title} subject={subject} body={body} yes={yes} no={no} deleteSurvey={this.props.deleteSurvey} fetchSurveys={this.props.fetchSurveys}/>;
+    }).reverse();
   }
 
   render() {
@@ -43,5 +31,5 @@ function mapStateToProps({ surveys }) {
 
 export default connect(
   mapStateToProps,
-  { fetchSurveys }
+  { fetchSurveys, deleteSurvey }
 )(SurveyList);

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FETCH_USER, SUBMIT_SURVEY, FETCH_SURVEYS } from './types';
+import { FETCH_USER, SUBMIT_SURVEY, FETCH_SURVEYS, DELETE_SURVEY } from './types';
 
 export const fetchUser = () => async dispatch => {
   dispatch({
@@ -28,5 +28,12 @@ export const fetchSurveys = () => async dispatch => {
   dispatch({
     type: FETCH_SURVEYS,
     payload: await axios.get('/api/surveys')
+  });
+};
+
+export const deleteSurvey = (id) => async dispatch => {
+  dispatch({
+    type: DELETE_SURVEY,
+    payload: await axios.delete(`/api/surveys/${id}`)
   });
 };
