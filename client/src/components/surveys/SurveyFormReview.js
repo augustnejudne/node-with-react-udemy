@@ -9,6 +9,7 @@ const SurveyFormReview = ({
   formValues,
   submitSurvey,
   fetchUser,
+  fetchSurveys,
   history
 }) => {
   const reviewFields = formFields.map(({ name, label }) => {
@@ -32,6 +33,7 @@ const SurveyFormReview = ({
         onClick={async () => {
           await submitSurvey(formValues, history);
           await fetchUser();
+          await fetchSurveys();
         }}
       >
         <div className="left">Send Survey</div>
